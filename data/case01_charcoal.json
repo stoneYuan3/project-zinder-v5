@@ -1,0 +1,273 @@
+{
+  // Case 1 — tutorial-sized. One direct contradiction per round.
+  // Golden path: Sooty's hands -> (Sooty XE, optional) | Marrow apron -> Marrow cameras -> footage
+  //              -> Patch XE (footage vs. "carried the child out") -> Patch leg -> Final: Patch + charred tissue.
+  "id": "case01_charcoal",
+  "title": "Case 1: Burned to Charcoal",
+  "clientName": "Duchess Ember Rotwell",
+  "cast": {
+    "Aunt Gristle": { "skin": "#a9b39a", "spots": "#6f7a62", "hair": "#f0f0f0", "stitches": true },
+    "Duchess Ember Rotwell": { "skin": "#c98d8d", "spots": "#8e4d55", "hair": "#3a2a2e" }
+  },
+
+  "intro": [
+    { "speaker": "Aunt Gristle", "text": "Darling! Welcome to your very own matchmaking agency. Don't touch the jar of spare eyes, it's decorative." },
+    { "speaker": "Aunt Gristle", "text": "Since the war ended, we zombies have rediscovered romance. And nothing is more romantic than a truly spectacular injury." },
+    { "speaker": "Aunt Gristle", "text": "Scars are medals, sweetheart. And my celebrity friends pay handsomely for partners with the right story." },
+    { "speaker": "Aunt Gristle", "text": "Your first client is the Duchess Ember Rotwell. Darling of the gossip columns. Flammable taste in partners." },
+    { "speaker": "Duchess Ember Rotwell", "text": "I want someone who was burned to charcoal. Crisp. Smoky. Survived the Gnawing Spoon fire." },
+    { "speaker": "Duchess Ember Rotwell", "text": "Someone who has been through the flames understands warmth. Do you understand? WARMTH." },
+    { "speaker": "Aunt Gristle", "text": "Unfortunately, the Duchess's publicist announced it in every paper. Now three candidates claim to be the survivor." },
+    { "speaker": "Aunt Gristle", "text": "Find the one who really burned. Don't just catch liars — verify the injury. Your commission file is on the desk." }
+  ],
+
+  "commission": {
+    "request": "Duchess Ember Rotwell seeks a partner who was burned to charcoal in the Gnawing Spoon restaurant fire and survived.",
+    "appointment": [
+      "Unverified: an anonymous voice message mentioned 'the smell of burnt brain-meat'.",
+      "Unverified: fire started in the restaurant kitchen at around 8:00 PM, Blood Moon Buffet night.",
+      "Unverified: Doc Sutures' Body Shop treated a severely charred patient the next morning."
+    ],
+    "publicAnnouncement": "WANTED: the brave survivor of the Gnawing Spoon fire! Burned to charcoal while heroically running BACK into the flames. A famous Duchess wishes to meet you. Apply at Gristle & Kin Matchmaking."
+  },
+
+  "startingEvidence": [ "announcement" ],
+
+  "evidence": [
+    { "id": "announcement", "name": "Public Announcement", "icon": "📰",
+      "facts": "Names the Gnawing Spoon and says the survivor ran back into the flames. Printed in every paper — anyone could know this.",
+      "source": "Commission file" },
+    { "id": "black_paint", "name": "Black Paint Smudge", "icon": "🖌",
+      "facts": "Fresh black body paint between Sooty's fingers. The surface of the body has been painted. Says nothing about what lies underneath.",
+      "source": "Observed: Sooty's hands" },
+    { "id": "staff_badge", "name": "Staff Badge", "icon": "🔖",
+      "facts": "'GNAWING SPOON — Marrow — Dishwasher.' Marrow worked at the restaurant.",
+      "source": "Observed: Marrow's apron" },
+    { "id": "evac_footage", "name": "Evacuation Footage", "icon": "📼",
+      "facts": "Security tape, fire night. 7:58 Marrow steps out back for a smoke break. 8:01–8:03 every diner leaves through the front, including a small child with parents. 8:04 one blurry diner walks back in alone. 8:12 the same figure staggers out, on fire, holding a large covered dish.",
+      "source": "Marrow (staff copy)" },
+    { "id": "repair_record", "name": "Body Shop Repair Record", "icon": "🧾",
+      "facts": "Doc Sutures' Body Shop, morning after the fire: 'full arm replacement, severe charring.' The patient name is smudged; only a stitched 'P' signature remains.",
+      "source": "Found: Patch's coat pocket" },
+    { "id": "meal_ticket", "name": "Prepaid Meal Ticket", "icon": "🎟",
+      "facts": "'Blood Moon Buffet — Deluxe Brain Platter. Table 6. PREPAID. NON-REFUNDABLE.'",
+      "source": "Patch (after cross-examination)" },
+    { "id": "charred_tissue", "name": "Charred Tissue", "icon": "🔥",
+      "facts": "Under Patch's leg bandage: deep char that goes all the way to the bone, flaking at a touch. Paint or makeup cannot reproduce damage this deep.",
+      "source": "Observed: Patch's bandaged leg" }
+  ],
+
+  "candidates": [
+    {
+      "id": "sooty",
+      "name": "Sooty Ashgrave",
+      "tagline": "Completely blackened",
+      "look": { "skin": "#2b2730", "spots": "#1a171d", "hair": "#cfcfcf", "bag": true },
+      "greeting": [
+        { "speaker": "Sooty Ashgrave", "text": "Look at me! Black from head to toe. I am OBVIOUSLY the survivor. Where's the Duchess?" }
+      ],
+      "interactions": [
+        { "id": "sooty_face", "kind": "hotspot", "label": "Face", "region": [140, 95, 120, 110],
+          "lines": [ { "speaker": "You", "text": "(An even, matte black. No cracks, no flaking. Very... uniform.)" } ] },
+        { "id": "sooty_hands", "kind": "hotspot", "label": "Hands", "region": [85, 330, 60, 55],
+          "lines": [
+            { "speaker": "You", "text": "(Between the fingers there's a glossy black smudge. It comes off on my glove.)" },
+            { "speaker": "You", "text": "(That's body paint. Their surface was painted — though that alone doesn't tell me what's underneath.)" }
+          ],
+          "grants": [ "black_paint" ] },
+        { "id": "sooty_bag", "kind": "hotspot", "label": "Shoulder bag", "region": [290, 340, 75, 75],
+          "lines": [ { "speaker": "Sooty Ashgrave", "text": "Hands off the bag! It's full of... personal heroism." } ] },
+        { "id": "sooty_where", "kind": "topic", "label": "Where were you when the fire started?",
+          "lines": [
+            { "speaker": "Sooty Ashgrave", "text": "At the Gnawing Spoon! Exactly like the announcement — I mean, exactly like I remember." }
+          ] },
+        { "id": "sooty_skin", "kind": "topic", "label": "Tell me about your skin.", "requires": [ "ev:black_paint" ],
+          "lines": [ { "speaker": "Sooty Ashgrave", "text": "One hundred percent natural fire damage. I don't even use moisturizer." } ] }
+      ],
+      "crossExam": {
+        "id": "xe_sooty",
+        "requires": [ "ev:black_paint" ],
+        "intro": [ { "speaker": "You", "text": "Sooty, walk me through it one more time. Slowly." } ],
+        "statements": [
+          { "text": "I was having dinner at the Gnawing Spoon when the kitchen went up.",
+            "press": [ { "speaker": "Sooty Ashgrave", "text": "Which table? The one near the... food. Obviously." } ],
+            "feedback": { "announcement": "Everyone who read the paper knows the restaurant's name. That doesn't contradict Sooty having been there." } },
+          { "text": "When I saw the flames, I ran back inside like a hero.",
+            "press": [ { "speaker": "Sooty Ashgrave", "text": "Back in! Into the flames! As advertised!" } ],
+            "feedback": { "evac_footage": "Someone did walk back in at 8:04, but the figure is too blurry to rule Sooty in or out." } },
+          { "text": "Every inch of me was cooked black. It's beautiful char.",
+            "press": [ { "speaker": "Sooty Ashgrave", "text": "Every inch! Admire freely." } ],
+            "feedback": { "black_paint": "Paint proves the surface was painted, but someone could paint over real char. This alone isn't a contradiction." } },
+          { "text": "And I've never put a single thing on my skin. Not even moisturizer.",
+            "press": [ { "speaker": "Sooty Ashgrave", "text": "Nothing! Ever! My skin is a temple. A charred temple." } ],
+            "contradicts": [ "black_paint" ] }
+        ],
+        "successLines": [
+          { "speaker": "You", "text": "Never put anything on your skin? Then explain the fresh body paint between your fingers." },
+          { "speaker": "Sooty Ashgrave", "text": "...It's Midnight Velvet. Two coats. Waterproof." },
+          { "speaker": "Sooty Ashgrave", "text": "Underneath I'm pale as a fresh corpse! I just read the announcement and the Duchess is SO famous..." }
+        ],
+        "setsFlags": [ "sooty_exposed" ],
+        "hint": "Look for a statement that the paint flatly makes impossible — not one it merely casts doubt on."
+      }
+    },
+    {
+      "id": "marrow",
+      "name": "Marrow Grubb",
+      "tagline": "Knows the restaurant well",
+      "look": { "skin": "#a68f9c", "spots": "#6f5672", "hair": "#9b9b9b", "apron": true },
+      "greeting": [
+        { "speaker": "Marrow Grubb", "text": "The Gnawing Spoon? I know every table, every pot, every exit. Who else could have survived it?" }
+      ],
+      "interactions": [
+        { "id": "marrow_apron", "kind": "hotspot", "label": "Apron", "region": [155, 265, 90, 95],
+          "lines": [
+            { "speaker": "You", "text": "(A stained kitchen apron with a badge pinned to it: 'GNAWING SPOON — Marrow — Dishwasher.')" },
+            { "speaker": "Marrow Grubb", "text": "Ah. Yes. I may have also worked there. Slightly." }
+          ],
+          "grants": [ "staff_badge" ] },
+        { "id": "marrow_hands", "kind": "hotspot", "label": "Hands", "region": [255, 330, 60, 55],
+          "lines": [ { "speaker": "You", "text": "(Pink, puffy, wrinkled skin. Scalds — like from hot water. Not char.)" } ] },
+        { "id": "marrow_where", "kind": "topic", "label": "Where were you when the fire started?",
+          "lines": [ { "speaker": "Marrow Grubb", "text": "Trapped in the dining room, obviously. Surrounded by flames. Very dramatic." } ] },
+        { "id": "marrow_cameras", "kind": "topic", "label": "Does the restaurant have cameras?", "requires": [ "ev:staff_badge" ],
+          "lines": [
+            { "speaker": "Marrow Grubb", "text": "Staff keep a copy of the security tape. Here — it'll prove I'm a hero. Probably." },
+            { "speaker": "Marrow Grubb", "text": "I, uh, haven't actually watched it." }
+          ],
+          "grants": [ "evac_footage" ] }
+      ],
+      "crossExam": {
+        "id": "xe_marrow",
+        "requires": [ "ev:evac_footage" ],
+        "intro": [ { "speaker": "You", "text": "Marrow, tell me again what happened that night." } ],
+        "statements": [
+          { "text": "I know the Gnawing Spoon like the back of my hand.",
+            "press": [ { "speaker": "Marrow Grubb", "text": "Seven tables, one fryer, a trapdoor nobody talks about." } ],
+            "feedback": { "staff_badge": "The badge explains why Marrow knows the place. It agrees with this statement." } },
+          { "text": "When the fire broke out, I was trapped in the dining room.",
+            "press": [ { "speaker": "Marrow Grubb", "text": "Trapped! Between table four and a very large soup." } ],
+            "contradicts": [ "evac_footage" ],
+            "feedback": { "staff_badge": "Staff can be in the dining room. The badge doesn't place Marrow anywhere at 8:00." } },
+          { "text": "The smoke was so thick I couldn't see my own claws.",
+            "press": [ { "speaker": "Marrow Grubb", "text": "Pitch black. Couldn't see a thing. Which is why I can't describe anything." } ] },
+          { "text": "That's how I got these burns on my hands.",
+            "press": [ { "speaker": "Marrow Grubb", "text": "Fire burns. Very hot. Ask anyone." } ],
+            "contradicts": [ "evac_footage" ] }
+        ],
+        "successLines": [
+          { "speaker": "You", "text": "Your own tape shows you stepping out back for a smoke break at 7:58 — before the fire started." },
+          { "speaker": "Marrow Grubb", "text": "...Fine. I was outside. The hands are from the dish steamer." },
+          { "speaker": "Marrow Grubb", "text": "But I DID see someone go back in. A bandaged regular from Table 6. Always ordered the deluxe platter." }
+        ],
+        "setsFlags": [ "marrow_exposed" ],
+        "hint": "Where does the tape put Marrow when the fire starts?"
+      }
+    },
+    {
+      "id": "patch",
+      "name": "Patch Stitchwell",
+      "tagline": "Extensively repaired",
+      "look": { "skin": "#bfa1ad", "spots": "#7b5f80", "hair": "#dadada", "bandages": true, "stitches": true },
+      "greeting": [
+        { "speaker": "Patch Stitchwell", "text": "Yes, I'm the survivor. I ran back in to save a screaming child. Very heroic. Please mention that to the Duchess." }
+      ],
+      "interactions": [
+        { "id": "patch_arm", "kind": "hotspot", "label": "Stitched shoulder", "region": [240, 255, 55, 70],
+          "lines": [
+            { "speaker": "You", "text": "(Neat surgical stitches all around the shoulder. This arm is a recent replacement.)" },
+            { "speaker": "You", "text": "(Replacements can remove old injuries. A fresh arm proves treatment, not what caused it.)" }
+          ] },
+        { "id": "patch_pocket", "kind": "hotspot", "label": "Coat pocket", "region": [160, 315, 45, 40],
+          "lines": [
+            { "speaker": "You", "text": "(A crumpled receipt from Doc Sutures' Body Shop. 'Full arm replacement, severe charring.')" },
+            { "speaker": "You", "text": "(The patient name is smudged. Just a stitched 'P'.)" }
+          ],
+          "grants": [ "repair_record" ] },
+        { "id": "patch_leg", "kind": "hotspot", "label": "Bandaged leg", "region": [205, 375, 55, 80],
+          "requires": [ "solved:xe_patch" ],
+          "lines": [
+            { "speaker": "Patch Stitchwell", "text": "Go on, have a peek. Mind the flakes." },
+            { "speaker": "You", "text": "(Under the bandage the leg is charred to the bone. Black flakes drift to the floor.)" },
+            { "speaker": "You", "text": "(No paint can fake damage this deep. This burn is real.)" }
+          ],
+          "grants": [ "charred_tissue" ] },
+        { "id": "patch_where", "kind": "topic", "label": "Where were you when the fire started?",
+          "lines": [ { "speaker": "Patch Stitchwell", "text": "Table 6. Best seat in the house. Closest to the buffet." } ] },
+        { "id": "patch_why", "kind": "topic", "label": "Why did you go back inside?",
+          "lines": [ { "speaker": "Patch Stitchwell", "text": "A child! Screaming! I'd never forgive myself. Also, um. A child." } ] },
+        { "id": "patch_platter", "kind": "topic", "label": "About that brain platter...", "requires": [ "solved:xe_patch" ],
+          "lines": [
+            { "speaker": "Patch Stitchwell", "text": "Deluxe. Slow-roasted. And by the time I got it out, flame-grilled." },
+            { "speaker": "Patch Stitchwell", "text": "Worth an arm and most of a leg. I'd do it again." }
+          ] }
+      ],
+      "crossExam": {
+        "id": "xe_patch",
+        "requires": [ "ev:evac_footage" ],
+        "intro": [ { "speaker": "You", "text": "Patch, tell me about the rescue. Every detail." } ],
+        "statements": [
+          { "text": "When the fire started, I heard a child screaming.",
+            "press": [ { "speaker": "Patch Stitchwell", "text": "Loud, high-pitched. Very child-like." } ],
+            "feedback": { "evac_footage": "At 8:00 the child was still inside — the family only left at 8:01–8:03. A scream then is possible." } },
+          { "text": "So I ran back into the flames to save them.",
+            "press": [ { "speaker": "Patch Stitchwell", "text": "Straight back in. No hesitation." } ],
+            "feedback": { "evac_footage": "The tape does show one diner walking back in at 8:04. That fits this statement." } },
+          { "text": "I carried the child out through the smoke.",
+            "press": [ { "speaker": "Patch Stitchwell", "text": "Cradled in my arms. Tiny. Grateful. Definitely a child." } ],
+            "contradicts": [ "evac_footage" ] },
+          { "text": "Then I collapsed outside, burned to a crisp.",
+            "press": [ { "speaker": "Patch Stitchwell", "text": "Crisp as a crouton. Ask Doc Sutures." } ],
+            "feedback": { "repair_record": "The record supports severe charring. It agrees with this statement rather than contradicting it." } }
+        ],
+        "successLines": [
+          { "speaker": "You", "text": "The child left with their parents at 8:02. The person who came back out at 8:12 was holding a covered dish." },
+          { "speaker": "Patch Stitchwell", "text": "..." },
+          { "speaker": "Patch Stitchwell", "text": "It was a PREPAID brain platter. Non-refundable! You'd have gone back too." },
+          { "speaker": "Patch Stitchwell", "text": "Fine, no child. But the burns are real. Look under the leg bandage if you don't believe me." }
+        ],
+        "grants": [ "meal_ticket" ],
+        "hint": "Compare what the tape shows leaving at 8:12 with what Patch claims to have carried."
+      }
+    }
+  ],
+
+  "final": {
+    "requires": [ "ev:charred_tissue" ],
+    "correctCandidate": "patch",
+    "acceptedEvidence": [ "charred_tissue" ],
+    "candidateFeedback": {
+      "sooty": "Sooty's black is paint. Nothing shows real burn damage underneath.",
+      "marrow": "Marrow's hands are scalded, not charred, and the tape puts them outside when the fire began."
+    },
+    "evidenceFeedback": {
+      "repair_record": "The record shows someone signing 'P' was treated for charring — but a smudged receipt doesn't tie it to Patch's own body.",
+      "evac_footage": "The figure on the tape is too blurry to identify anyone.",
+      "meal_ticket": "The ticket explains why Patch went back in. It doesn't prove the burn.",
+      "announcement": "Public information proves nothing about who experienced the fire."
+    },
+    "genericFeedback": "That doesn't establish a real burn injury.",
+    "successLines": [
+      { "speaker": "You", "text": "Patch Stitchwell. The leg is charred to the bone — damage no paint can fake." },
+      { "speaker": "Patch Stitchwell", "text": "Told you. Can I have a sandwich? All this honesty made me peckish." }
+    ]
+  },
+
+  "briefing": [
+    { "speaker": "You", "text": "Duchess, the survivor is Patch Stitchwell. Their burns are real — charred to the bone at the Gnawing Spoon." },
+    { "speaker": "You", "text": "One correction, though: there was no child. Patch ran back into the fire for a prepaid brain platter." },
+    { "speaker": "Duchess Ember Rotwell", "text": "...Into an inferno. For brains. Because they'd already paid." },
+    { "speaker": "Duchess Ember Rotwell", "text": "That is the most passionate thing I have ever heard. Arrange the date." }
+  ],
+  "epilogue": [
+    { "speaker": "Narrator", "text": "One week later, at the newly rebuilt Gnawing Spoon..." },
+    { "speaker": "Duchess Ember Rotwell", "text": "You smell like a campfire and poor decisions. I adore it." },
+    { "speaker": "Patch Stitchwell", "text": "I ordered us the deluxe platter. Prepaid. Just in case." }
+  ],
+  "epilogueExtras": [
+    { "requires": [ "sooty_exposed" ],
+      "lines": [ { "speaker": "Aunt Gristle", "text": "Oh, and that Sooty creature is now the face of Midnight Velvet body paint. Waterproof, apparently." } ] },
+    { "requires": [ "marrow_exposed" ],
+      "lines": [ { "speaker": "Aunt Gristle", "text": "Marrow got his dishwashing job back. He's telling everyone he 'solved the case'." } ] }
+  ]
+}

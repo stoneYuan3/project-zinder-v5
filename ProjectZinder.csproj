@@ -1,0 +1,23 @@
+<Project Sdk="Godot.NET.Sdk/4.7.2">
+
+  <!-- Godot glue + UI. Game rules live in src/Core (separate assembly, no Godot types). -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>ProjectZinder</RootNamespace>
+    <!-- Only the .NET 10 runtime may be installed; allow the game to roll forward to it. -->
+    <RollForward>LatestMajor</RollForward>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="src/Core/**" />
+    <Compile Remove="tests/**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="src\Core\ProjectZinder.Core.csproj" />
+  </ItemGroup>
+
+</Project>

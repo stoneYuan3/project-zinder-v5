@@ -1,0 +1,230 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/Game/Main.cs" id="1_main"]
+[ext_resource type="Script" path="res://src/Game/UI/ZombiePortrait.cs" id="2_portrait"]
+[ext_resource type="Script" path="res://src/Game/UI/CrossExamPanel.cs" id="3_cross"]
+[ext_resource type="Script" path="res://src/Game/UI/DialogueBox.cs" id="4_dialogue"]
+[ext_resource type="Script" path="res://src/Game/UI/EvidencePanel.cs" id="5_evidence"]
+[ext_resource type="Script" path="res://src/Game/UI/CommissionPanel.cs" id="6_commission"]
+[ext_resource type="Script" path="res://src/Game/UI/CandidatePickPanel.cs" id="7_pick"]
+[ext_resource type="Script" path="res://src/Game/UI/ConfirmPanel.cs" id="8_confirm"]
+[ext_resource type="Script" path="res://src/Game/UI/StampOverlay.cs" id="9_stamp"]
+[ext_resource type="Script" path="res://src/Game/UI/BiteOverlay.cs" id="10_bite"]
+[ext_resource type="Script" path="res://src/Game/UI/Toast.cs" id="11_toast"]
+[ext_resource type="Script" path="res://src/Game/UI/SplashScreen.cs" id="12_splash"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_main")
+
+[node name="TopBarBg" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 44.0
+mouse_filter = 2
+color = Color(0.149, 0.137, 0.149, 1)
+
+[node name="TopBar" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 4.0
+offset_right = 1264.0
+offset_bottom = 40.0
+theme_override_constants/separation = 24
+
+[node name="PhaseLabel" type="Label" parent="TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.957, 0.945, 0.918, 1)
+text = "Investigation"
+vertical_alignment = 1
+
+[node name="PatienceLabel" type="Label" parent="TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.4, 0.45, 1)
+vertical_alignment = 1
+
+[node name="ShowPointsToggle" type="CheckButton" parent="TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Always show clickable spots and whether you've read them."
+text = "Show interaction points"
+
+[node name="CandidatesHeader" type="Label" parent="."]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 58.0
+offset_right = 256.0
+offset_bottom = 86.0
+theme_override_colors/font_color = Color(0.427, 0.4, 0.439, 1)
+text = "Candidates in reception"
+
+[node name="CandidateList" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 16.0
+offset_top = 90.0
+offset_right = 256.0
+offset_bottom = 420.0
+theme_override_constants/separation = 10
+
+[node name="Nameplate" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 440.0
+offset_top = 54.0
+offset_right = 840.0
+offset_bottom = 90.0
+theme_override_colors/font_color = Color(0.482, 0.373, 0.502, 1)
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 1
+
+[node name="Portrait" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 440.0
+offset_top = 100.0
+offset_right = 840.0
+offset_bottom = 580.0
+mouse_filter = 2
+script = ExtResource("2_portrait")
+
+[node name="Topics" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 870.0
+offset_top = 110.0
+offset_right = 1260.0
+offset_bottom = 470.0
+theme_override_constants/separation = 10
+
+[node name="Desk" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 150.0
+offset_top = 630.0
+offset_right = 1130.0
+offset_bottom = 676.0
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="FileButton" type="Button" parent="Desk"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 44)
+layout_mode = 2
+text = "Commission File"
+
+[node name="EvidenceButton" type="Button" parent="Desk"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 44)
+layout_mode = 2
+text = "Evidence"
+
+[node name="CrossExamButton" type="Button" parent="Desk"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 44)
+layout_mode = 2
+text = "Begin Cross-Examination"
+
+[node name="FinalButton" type="Button" parent="Desk"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 44)
+layout_mode = 2
+text = "Final Identification"
+
+[node name="CrossExam" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("3_cross")
+
+[node name="Dialogue" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("4_dialogue")
+
+[node name="CandidatePick" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("7_pick")
+
+[node name="EvidencePanel" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("5_evidence")
+
+[node name="CommissionPanel" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("6_commission")
+
+[node name="Confirm" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("8_confirm")
+
+[node name="Stamp" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("9_stamp")
+
+[node name="Bite" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("10_bite")
+
+[node name="Splash" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("12_splash")
+
+[node name="Toast" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 540.0
+offset_top = 70.0
+offset_right = 740.0
+offset_bottom = 110.0
+mouse_filter = 2
+script = ExtResource("11_toast")
