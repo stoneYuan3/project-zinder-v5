@@ -36,25 +36,53 @@
   "evidence": [
     { "id": "announcement", "name": "Public Announcement", "icon": "📰",
       "facts": "Names the Gnawing Spoon and says the survivor ran back into the flames. Printed in every paper — anyone could know this.",
-      "source": "Commission file" },
+      "source": "Commission file",
+      "reveal": [
+        { "speaker": "You", "text": "(The public announcement. Every candidate has read this — knowing it proves nothing.)" }
+      ] },
     { "id": "black_paint", "name": "Black Paint Smudge", "icon": "🖌",
       "facts": "Fresh black body paint between Sooty's fingers. The surface of the body has been painted. Says nothing about what lies underneath.",
-      "source": "Observed: Sooty's hands" },
+      "source": "Observed: Sooty's hands",
+      "reveal": [
+        { "speaker": "You", "text": "(Fresh body paint. Sooty's surface has definitely been painted.)" },
+        { "speaker": "You", "text": "(But paint only covers things up. It doesn't tell me what's underneath.)" }
+      ] },
     { "id": "staff_badge", "name": "Staff Badge", "icon": "🔖",
       "facts": "'GNAWING SPOON — Marrow — Dishwasher.' Marrow worked at the restaurant.",
-      "source": "Observed: Marrow's apron" },
+      "source": "Observed: Marrow's apron",
+      "reveal": [
+        { "speaker": "You", "text": "(So Marrow worked at the Gnawing Spoon.)" },
+        { "speaker": "You", "text": "(That explains how well they know the place — not whether they were burned there.)" }
+      ] },
     { "id": "evac_footage", "name": "Evacuation Footage", "icon": "📼",
       "facts": "Security tape, fire night. 7:58 Marrow steps out back for a smoke break. 8:01–8:03 every diner leaves through the front, including a small child with parents. 8:04 one blurry diner walks back in alone. 8:12 the same figure staggers out, on fire, holding a large covered dish.",
-      "source": "Marrow (staff copy)" },
+      "source": "Marrow (staff copy)",
+      "reveal": [
+        { "speaker": "You", "text": "(Let's see... 7:58, Marrow steps out back for a smoke break.)" },
+        { "speaker": "You", "text": "(8:01 to 8:03, everyone leaves through the front — including a small child with their parents.)" },
+        { "speaker": "You", "text": "(8:04, one blurry diner walks back IN. At 8:12 they stagger out on fire... holding a covered dish?)" }
+      ] },
     { "id": "repair_record", "name": "Body Shop Repair Record", "icon": "🧾",
       "facts": "Doc Sutures' Body Shop, morning after the fire: 'full arm replacement, severe charring.' The patient name is smudged; only a stitched 'P' signature remains.",
-      "source": "Found: Patch's coat pocket" },
+      "source": "Found: Patch's coat pocket",
+      "reveal": [
+        { "speaker": "You", "text": "(The patient name is smudged. Just a stitched 'P'.)" },
+        { "speaker": "You", "text": "(It proves someone was treated for severe charring — not who, or where it happened.)" }
+      ] },
     { "id": "meal_ticket", "name": "Prepaid Meal Ticket", "icon": "🎟",
       "facts": "'Blood Moon Buffet — Deluxe Brain Platter. Table 6. PREPAID. NON-REFUNDABLE.'",
-      "source": "Patch (after cross-examination)" },
+      "source": "Patch (after cross-examination)",
+      "reveal": [
+        { "speaker": "You", "text": "(Table 6 — Patch's table. Prepaid and non-refundable.)" },
+        { "speaker": "You", "text": "(Well. That's certainly a reason to run back into a burning building.)" }
+      ] },
     { "id": "charred_tissue", "name": "Charred Tissue", "icon": "🔥",
       "facts": "Under Patch's leg bandage: deep char that goes all the way to the bone, flaking at a touch. Paint or makeup cannot reproduce damage this deep.",
-      "source": "Observed: Patch's bandaged leg" }
+      "source": "Observed: Patch's bandaged leg",
+      "reveal": [
+        { "speaker": "You", "text": "(Charred straight through to the bone. Paint or makeup could never fake damage this deep.)" },
+        { "speaker": "You", "text": "(Whatever Patch's reasons were, this burn is real.)" }
+      ] }
   ],
 
   "candidates": [
@@ -66,13 +94,15 @@
       "greeting": [
         { "speaker": "Sooty Ashgrave", "text": "Look at me! Black from head to toe. I am OBVIOUSLY the survivor. Where's the Duchess?" }
       ],
+      "departedLines": [
+        { "speaker": "You", "text": "(Sooty has already left. Just a smudge of black paint on the empty chair.)" }
+      ],
       "interactions": [
         { "id": "sooty_face", "kind": "hotspot", "label": "Face", "region": [140, 95, 120, 110],
           "lines": [ { "speaker": "You", "text": "(An even, matte black. No cracks, no flaking. Very... uniform.)" } ] },
         { "id": "sooty_hands", "kind": "hotspot", "label": "Hands", "region": [85, 330, 60, 55],
           "lines": [
-            { "speaker": "You", "text": "(Between the fingers there's a glossy black smudge. It comes off on my glove.)" },
-            { "speaker": "You", "text": "(That's body paint. Their surface was painted — though that alone doesn't tell me what's underneath.)" }
+            { "speaker": "You", "text": "(Between the fingers there's a glossy black smudge. It comes off on my glove.)" }
           ],
           "grants": [ "black_paint" ] },
         { "id": "sooty_bag", "kind": "hotspot", "label": "Shoulder bag", "region": [290, 340, 75, 75],
@@ -105,9 +135,13 @@
         "successLines": [
           { "speaker": "You", "text": "Never put anything on your skin? Then explain the fresh body paint between your fingers." },
           { "speaker": "Sooty Ashgrave", "text": "...It's Midnight Velvet. Two coats. Waterproof." },
-          { "speaker": "Sooty Ashgrave", "text": "Underneath I'm pale as a fresh corpse! I just read the announcement and the Duchess is SO famous..." }
+          { "speaker": "Sooty Ashgrave", "text": "I bought it the morning the announcement ran. Painted myself head to toe in the bathtub." },
+          { "speaker": "Sooty Ashgrave", "text": "Underneath I'm pale as a fresh corpse. Never been near the Gnawing Spoon. Never been near any fire." },
+          { "speaker": "Sooty Ashgrave", "text": "Everything I told you came straight from the newspaper. The Duchess is SO famous... I just wanted one date." },
+          { "speaker": "Sooty Ashgrave", "text": "Fine. I'm leaving. Please don't tell the Duchess about the bathtub." }
         ],
         "setsFlags": [ "sooty_exposed" ],
+        "departs": true,
         "hint": "Look for a statement that the paint flatly makes impossible — not one it merely casts doubt on."
       }
     },
@@ -118,6 +152,9 @@
       "look": { "skin": "#a68f9c", "spots": "#6f5672", "hair": "#9b9b9b", "apron": true },
       "greeting": [
         { "speaker": "Marrow Grubb", "text": "The Gnawing Spoon? I know every table, every pot, every exit. Who else could have survived it?" }
+      ],
+      "departedLines": [
+        { "speaker": "You", "text": "(Marrow has already left — back to the kitchen. The chair still smells of dish soap.)" }
       ],
       "interactions": [
         { "id": "marrow_apron", "kind": "hotspot", "label": "Apron", "region": [155, 265, 90, 95],
@@ -157,10 +194,14 @@
         ],
         "successLines": [
           { "speaker": "You", "text": "Your own tape shows you stepping out back for a smoke break at 7:58 — before the fire started." },
-          { "speaker": "Marrow Grubb", "text": "...Fine. I was outside. The hands are from the dish steamer." },
-          { "speaker": "Marrow Grubb", "text": "But I DID see someone go back in. A bandaged regular from Table 6. Always ordered the deluxe platter." }
+          { "speaker": "Marrow Grubb", "text": "...Fine. I was outside on my smoke break. By the time I turned around, the kitchen was already burning." },
+          { "speaker": "Marrow Grubb", "text": "The hands? Dish steamer. Twelve years of scalding water, not one second of fire." },
+          { "speaker": "Marrow Grubb", "text": "When the papers said 'Gnawing Spoon', I thought: nobody knows that place better than me. I could tell the story perfectly." },
+          { "speaker": "Marrow Grubb", "text": "But I DID see someone go back in. A bandaged regular from Table 6. Always ordered the deluxe platter." },
+          { "speaker": "Marrow Grubb", "text": "I've got dishes waiting. Good luck, matchmaker." }
         ],
         "setsFlags": [ "marrow_exposed" ],
+        "departs": true,
         "hint": "Where does the tape put Marrow when the fire starts?"
       }
     },
@@ -180,16 +221,14 @@
           ] },
         { "id": "patch_pocket", "kind": "hotspot", "label": "Coat pocket", "region": [160, 315, 45, 40],
           "lines": [
-            { "speaker": "You", "text": "(A crumpled receipt from Doc Sutures' Body Shop. 'Full arm replacement, severe charring.')" },
-            { "speaker": "You", "text": "(The patient name is smudged. Just a stitched 'P'.)" }
+            { "speaker": "You", "text": "(A crumpled receipt from Doc Sutures' Body Shop. 'Full arm replacement, severe charring.')" }
           ],
           "grants": [ "repair_record" ] },
         { "id": "patch_leg", "kind": "hotspot", "label": "Bandaged leg", "region": [205, 375, 55, 80],
           "requires": [ "solved:xe_patch" ],
           "lines": [
             { "speaker": "Patch Stitchwell", "text": "Go on, have a peek. Mind the flakes." },
-            { "speaker": "You", "text": "(Under the bandage the leg is charred to the bone. Black flakes drift to the floor.)" },
-            { "speaker": "You", "text": "(No paint can fake damage this deep. This burn is real.)" }
+            { "speaker": "You", "text": "(Under the bandage the leg is charred to the bone. Black flakes drift to the floor.)" }
           ],
           "grants": [ "charred_tissue" ] },
         { "id": "patch_where", "kind": "topic", "label": "Where were you when the fire started?",

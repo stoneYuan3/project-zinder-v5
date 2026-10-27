@@ -156,4 +156,62 @@ public class CaseSessionTests
         s.Challenge(xe, StatementIndex(xe, "black_paint"), "black_paint");
         Assert.Equal(baseCount + 1, s.BuildEpilogue().Count());
     }
+    [Fact]
+    public void ExposedImpostor_Departs_AndBecomesUnavailable()
+    {
+        var s = NewSession();
+        s.CompleteInteraction(Interaction(s, "sooty_hands"));
+        var sooty = s.GetCandidate("sooty");
+        s.BeginPhase(sooty.CrossExam!.Id);
+        s.Challenge(sooty.CrossExam, StatementIndex(sooty.CrossExam, "black_paint"), "black_paint");
+
+        Assert.True(s.HasDeparted("sooty"));
+        Assert.All(sooty.Interactions, i => Assert.False(s.IsAvailable(i)));
+        Assert.False(s.CanBeginCrossExam(sooty));
+        Assert.NotEmpty(sooty.DepartedLines);
+    }
+
+    [Fact]
+    public void GenuineSurvivor_StaysAfterExposure()
+    {
+        var s = NewSession();
+        s.CompleteInteraction(Interaction(s, "marrow_apron"));
+        s.CompleteInteraction(Interaction(s, "marrow_cameras"));
+        var patch = s.GetCandidate("patch");
+        s.BeginPhase(patch.CrossExam!.Id);
+        s.Challenge(patch.CrossExam, StatementIndex(patch.CrossExam, "evac_footage"), "evac_footage");
+
+        Assert.False(s.HasDeparted("patch"));
+        Assert.True(s.IsAvailable(Interaction(s, "patch_leg")));
+    }
+
+    [Fact]
+    public void Retry_RestoresDepartureState()
+    {
+        var s = NewSession();
+        s.CompleteInteraction(Interaction(s, "sooty_hands"));
+        var sooty = s.GetCandidate("sooty");
+        s.BeginPhase(sooty.CrossExam!.Id);
+        s.Challenge(sooty.CrossExam, StatementIndex(sooty.CrossExam, "black_paint"), "black_paint");
+
+        s.BeginPhase(CaseSession.FinalPhaseId); // checkpoint taken after Sooty left
+        s.RetryFromCheckpoint();
+        Assert.True(s.HasDeparted("sooty"));
+    }
+
+    [Fact]
+    public void Validation_RejectsDepartingGenuineSurvivor()
+    {
+        var def = LoadCase();
+        def.Candidates.First(c => c.Id == def.Final.CorrectCandidate).CrossExam!.Departs = true;
+        Assert.Contains(CaseLoader.Validate(def), e => e.Contains("must not depart"));
+    }
+
+    [Fact]
+    public void EveryObtainableEvidence_HasRevealMonologue()
+    {
+        var def = LoadCase();
+        Assert.All(def.Evidence.Where(e => !def.StartingEvidence.Contains(e.Id)),
+            e => Assert.NotEmpty(e.Reveal));
+    }
 }

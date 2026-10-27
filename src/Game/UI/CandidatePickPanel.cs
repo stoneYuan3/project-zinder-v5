@@ -10,7 +10,7 @@ public partial class CandidatePickPanel : ModalPanel
 
     private TaskCompletionSource<string?>? _result;
 
-    public Task<string?> PickAsync(IEnumerable<CandidateDefinition> candidates, int patience)
+    public Task<string?> PickAsync(IEnumerable<CandidateDefinition> candidates, int patience, Func<CandidateDefinition, bool> hasLeft)
     {
         ClearContent();
         Title.Text = "Final Identification";
@@ -21,7 +21,7 @@ public partial class CandidatePickPanel : ModalPanel
         foreach (var c in candidates)
         {
             var id = c.Id;
-            Content.AddChild(UiTheme.MakeButton($"{c.Name}  —  {c.Tagline}", () => Resolve(id)));
+            Content.AddChild(UiTheme.MakeButton($"{c.Name}  —  {(hasLeft(c) ? "(left the agency)" : c.Tagline)}", () => Resolve(id)));
         }
         var cancel = UiTheme.MakeButton("Not yet", Cancel, 140);
         cancel.SizeFlagsHorizontal = SizeFlags.ShrinkEnd;

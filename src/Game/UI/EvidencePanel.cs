@@ -56,7 +56,11 @@ public partial class EvidencePanel : ModalPanel
         Content.AddChild(buttons);
     }
 
-    public void OpenBrowse(IEnumerable<EvidenceDefinition> items) => _ = Open(items, null);
+    public void OpenBrowse(IEnumerable<EvidenceDefinition> items, string? focusId = null)
+    {
+        _ = Open(items, null);
+        if (focusId != null) Select(focusId);
+    }
 
     public Task<string?> SelectAsync(IEnumerable<EvidenceDefinition> items, string prompt) => Open(items, prompt);
 

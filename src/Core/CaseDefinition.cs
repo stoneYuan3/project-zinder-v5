@@ -48,6 +48,8 @@ public sealed class EvidenceDefinition
     /// <summary>Confirmed facts only. Never states which testimony to challenge.</summary>
     public string Facts { get; set; } = "";
     public string Source { get; set; } = "";
+    /// <summary>Protagonist's monologue shown on the close-up when the evidence is first obtained.</summary>
+    public List<DialogueLine> Reveal { get; set; } = new();
 }
 
 /// <summary>Look parameters for the procedural placeholder portrait.</summary>
@@ -69,6 +71,8 @@ public sealed class CandidateDefinition
     public string Tagline { get; set; } = "";
     public Appearance Look { get; set; } = new();
     public List<DialogueLine> Greeting { get; set; } = new();
+    /// <summary>Played every time the player returns to a candidate who has left the agency.</summary>
+    public List<DialogueLine> DepartedLines { get; set; } = new();
     public List<InteractionDefinition> Interactions { get; set; } = new();
     public CrossExamDefinition? CrossExam { get; set; }
 }
@@ -97,6 +101,8 @@ public sealed class CrossExamDefinition
     public List<DialogueLine> SuccessLines { get; set; } = new();
     public List<string> Grants { get; set; } = new();
     public List<string> SetsFlags { get; set; } = new();
+    /// <summary>The candidate leaves the agency after this round is won (impostors only).</summary>
+    public bool Departs { get; set; }
     public string GenericFeedback { get; set; } = "That evidence doesn't contradict this statement.";
     /// <summary>Shown after repeated mistakes. Points the way without naming the answer.</summary>
     public string Hint { get; set; } = "";

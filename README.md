@@ -37,10 +37,13 @@ Final ID: Patch + Charred Tissue → stamp → briefing.
 ## In scope vs. deferred
 
 Implemented: commission file (auto-opens once, then on the desk), free candidate switching,
-hotspots with hover labels and new/completed states, a "Show interaction points" toggle,
+hotspots with hover labels and new/completed states, an evidence close-up with the protagonist's
+monologue whenever evidence is found, a desk evidence tray (click any item to inspect it), a "Show interaction points" toggle,
 topic bubbles, free replay with no duplicate evidence, evidence inspection, gated cross-examination
 (3–5 statements, Previous/Next, Question, Present, Review Testimony Again), confirmation before
-judged actions, specific vs. generic wrong-answer feedback, hints after 2 mistakes, 3 patience
+judged actions, a "LIE EXPOSED!" moment comparing the statement with the evidence,
+full confessions, impostors leaving the agency after being exposed (data-driven via `departs`;
+the genuine survivor never leaves), specific vs. generic wrong-answer feedback, hints after 2 mistakes, 3 patience
 per phase (persists when you leave), bite failure with checkpoint retry, multiple valid solutions,
 final identification (candidate + evidence), drag-or-click denture stamp, client briefing,
 and epilogue variations from optional exposures.

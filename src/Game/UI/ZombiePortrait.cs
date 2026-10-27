@@ -65,6 +65,19 @@ public partial class ZombiePortrait : Control
         await ToSignal(_reaction, Tween.SignalName.Finished);
     }
 
+    /// <summary>Candidate walks off stage; the portrait ends hidden and reset for reuse.</summary>
+    public async Task ExitAsync()
+    {
+        _reaction?.Kill();
+        _reaction = CreateTween();
+        _reaction.TweenProperty(this, "position:x", _basePosition.X + 520, 0.6).SetTrans(Tween.TransitionType.Quad).SetEase(Tween.EaseType.In);
+        _reaction.Parallel().TweenProperty(this, "modulate:a", 0f, 0.6);
+        await ToSignal(_reaction, Tween.SignalName.Finished);
+        Visible = false;
+        Position = _basePosition;
+        Modulate = Colors.White;
+    }
+
     // ---- Drawing --------------------------------------------------------------------------
 
     public override void _Draw()

@@ -12,6 +12,8 @@
 [ext_resource type="Script" path="res://src/Game/UI/BiteOverlay.cs" id="10_bite"]
 [ext_resource type="Script" path="res://src/Game/UI/Toast.cs" id="11_toast"]
 [ext_resource type="Script" path="res://src/Game/UI/SplashScreen.cs" id="12_splash"]
+[ext_resource type="Script" path="res://src/Game/UI/EvidenceReveal.cs" id="13_reveal"]
+[ext_resource type="Script" path="res://src/Game/UI/ExposeOverlay.cs" id="14_expose"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -107,24 +109,17 @@ theme_override_constants/separation = 10
 
 [node name="Desk" type="HBoxContainer" parent="."]
 layout_mode = 0
-offset_left = 150.0
+offset_left = 40.0
 offset_top = 630.0
-offset_right = 1130.0
+offset_right = 1240.0
 offset_bottom = 676.0
 theme_override_constants/separation = 14
-alignment = 1
 
 [node name="FileButton" type="Button" parent="Desk"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 44)
 layout_mode = 2
 text = "Commission File"
-
-[node name="EvidenceButton" type="Button" parent="Desk"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(170, 44)
-layout_mode = 2
-text = "Evidence"
 
 [node name="CrossExamButton" type="Button" parent="Desk"]
 unique_name_in_owner = true
@@ -138,6 +133,21 @@ custom_minimum_size = Vector2(220, 44)
 layout_mode = 2
 text = "Final Identification"
 
+[node name="Spacer" type="Control" parent="Desk"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="TrayLabel" type="Label" parent="Desk"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.957, 0.945, 0.918, 1)
+text = "Evidence:"
+vertical_alignment = 1
+
+[node name="EvidenceTray" type="HBoxContainer" parent="Desk"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 6
+
 [node name="CrossExam" type="Control" parent="."]
 unique_name_in_owner = true
 visible = false
@@ -147,6 +157,15 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("3_cross")
 
+[node name="EvidenceReveal" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("13_reveal")
+
 [node name="Dialogue" type="Control" parent="."]
 unique_name_in_owner = true
 visible = false
@@ -155,6 +174,16 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("4_dialogue")
+
+[node name="Toast" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 540.0
+offset_top = 70.0
+offset_right = 740.0
+offset_bottom = 110.0
+mouse_filter = 2
+script = ExtResource("11_toast")
 
 [node name="CandidatePick" type="Control" parent="."]
 unique_name_in_owner = true
@@ -201,6 +230,15 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("9_stamp")
 
+[node name="Expose" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("14_expose")
+
 [node name="Bite" type="Control" parent="."]
 unique_name_in_owner = true
 visible = false
@@ -218,13 +256,3 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("12_splash")
-
-[node name="Toast" type="PanelContainer" parent="."]
-unique_name_in_owner = true
-layout_mode = 0
-offset_left = 540.0
-offset_top = 70.0
-offset_right = 740.0
-offset_bottom = 110.0
-mouse_filter = 2
-script = ExtResource("11_toast")

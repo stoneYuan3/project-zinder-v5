@@ -17,6 +17,10 @@ public partial class Main : Control
     private CaseSession _session = null!;
     private CandidateDefinition _current = null!;
     private readonly HashSet<string> _greeted = new();
+    /// <summary>Candidates whose exit animation has played; their portrait stays hidden from then on.</summary>
+    private readonly HashSet<string> _offStage = new();
+    /// <summary>Evidence mid-reveal: kept out of the tray until its card lands there.</summary>
+    private readonly HashSet<string> _revealing = new();
     private HashSet<string> _unlocked = new();
     private bool _busy;
     private bool _showPoints;
@@ -28,7 +32,10 @@ public partial class Main : Control
     private CheckButton _showPointsToggle = null!;
     private VBoxContainer _candidateList = null!, _topics = null!;
     private ZombiePortrait _portrait = null!;
-    private Button _fileButton = null!, _evidenceButton = null!, _crossButton = null!, _finalButton = null!;
+    private Button _fileButton = null!, _crossButton = null!, _finalButton = null!;
+    private HBoxContainer _evidenceTray = null!;
+    private EvidenceReveal _evidenceReveal = null!;
+    private ExposeOverlay _expose = null!;
     private CrossExamPanel _cross = null!;
     private DialogueBox _dialogue = null!;
     private EvidencePanel _evidencePanel = null!;
@@ -63,7 +70,9 @@ public partial class Main : Control
         _topics = GetNode<VBoxContainer>("%Topics");
         _portrait = GetNode<ZombiePortrait>("%Portrait");
         _fileButton = GetNode<Button>("%FileButton");
-        _evidenceButton = GetNode<Button>("%EvidenceButton");
+        _evidenceTray = GetNode<HBoxContainer>("%EvidenceTray");
+        _evidenceReveal = GetNode<EvidenceReveal>("%EvidenceReveal");
+        _expose = GetNode<ExposeOverlay>("%Expose");
         _crossButton = GetNode<Button>("%CrossExamButton");
         _finalButton = GetNode<Button>("%FinalButton");
         _cross = GetNode<CrossExamPanel>("%CrossExam");
@@ -90,7 +99,6 @@ public partial class Main : Control
     {
         _showPointsToggle.Toggled += on => { _showPoints = on; Refresh(); };
         _fileButton.Pressed += () => Run(() => _commission.OpenAsync(_session.Definition));
-        _evidenceButton.Pressed += () => _evidencePanel.OpenBrowse(_session.CollectedEvidence);
         _crossButton.Pressed += () => Run(BeginCrossExamAsync);
         _finalButton.Pressed += () => Run(FinalIdentificationAsync);
 
@@ -142,8 +150,14 @@ public partial class Main : Control
     {
         _current = candidate;
         Refresh();
-        await GreetIfNeededAsync();
+        if (IsOffStage(candidate))
+            await _dialogue.PlayAsync(candidate.DepartedLines); // every visit, not just the first
+        else
+            await GreetIfNeededAsync();
     }
+
+    private bool IsOffStage(CandidateDefinition candidate) =>
+        _session.HasDeparted(candidate.Id) && _offStage.Contains(candidate.Id);
 
     private async Task InteractAsync(InteractionDefinition interaction)
     {
@@ -154,10 +168,14 @@ public partial class Main : Control
 
     private async Task AnnounceEvidenceAsync(IEnumerable<EvidenceDefinition> gained)
     {
-        foreach (var ev in gained)
+        var items = gained.ToList();
+        foreach (var ev in items) _revealing.Add(ev.Id);
+        Refresh();
+        foreach (var ev in items)
         {
-            _toast.Announce($"Evidence added: {ev.Icon} {ev.Name}", Palette.EyeYellow);
-            await _dialogue.SayAsync("Evidence", $"{ev.Icon} {ev.Name} — {ev.Facts}");
+            await _evidenceReveal.ShowAsync(ev, _dialogue, TrayDropPoint());
+            _revealing.Remove(ev.Id);
+            Refresh();
         }
     }
 
@@ -202,15 +220,17 @@ public partial class Main : Control
         {
             case ChallengeOutcome.Success:
                 _portrait.Shake();
-                _toast.Announce("CONTRADICTION!", Palette.Blood, 1.2f);
-                await _dialogue.PlayAsync(new[]
-                {
-                    new DialogueLine { Speaker = "Statement", Text = $"“{statement.Text}”" },
-                    new DialogueLine { Speaker = $"Evidence: {ev.Name}", Text = ev.Facts },
-                });
-                await _dialogue.PlayAsync(xe.SuccessLines);
+                ScreenShake();
+                await _expose.ShowAsync(statement.Text, ev);
+                await _dialogue.PlayAsync(xe.SuccessLines); // full confession
                 await AnnounceEvidenceAsync(result.NewEvidence);
                 _phaseId = null;
+                if (_session.HasDeparted(_current.Id))
+                {
+                    await _portrait.ExitAsync();
+                    _offStage.Add(_current.Id);
+                    _toast.Announce($"{_current.Name} has left the agency.");
+                }
                 _toast.Announce("Cross-Examination Complete", Palette.Good);
                 AnnounceUnlocks();
                 break;
@@ -237,15 +257,14 @@ public partial class Main : Control
         Refresh();
     }
 
-    private async Task PlayFeedbackAsync(string speaker, ChallengeResult result)
+    private async Task PlayFeedbackAsync(string speaker, ChallengeResult result, bool speakerPresent = true)
     {
-        var lines = new List<DialogueLine>
-        {
-            new() { Speaker = speaker, Text = result.PatienceLeft == 1
+        var lines = new List<DialogueLine>();
+        if (speakerPresent)
+            lines.Add(new() { Speaker = speaker, Text = result.PatienceLeft == 1
                 ? "One more accusation like that and I'm taking a bite."
-                : "That proves nothing! Watch your accusations." },
-            new() { Speaker = "You (thinking)", Text = result.Feedback },
-        };
+                : "That proves nothing! Watch your accusations." });
+        lines.Add(new() { Speaker = "You (thinking)", Text = result.Feedback });
         if (result.Hint is { } hint)
             lines.Add(new DialogueLine { Speaker = "Hint", Text = hint });
         await _dialogue.PlayAsync(lines);
@@ -254,6 +273,7 @@ public partial class Main : Control
     /// <returns>true if the player retried (state restored), false if they went to the main menu.</returns>
     private async Task<bool> BiteAsync(string biterName)
     {
+        _portrait.Visible = true; // a departed candidate storms back in for this
         await _portrait.LungeAsync();
         ScreenShake();
         if (!await _bite.PlayAsync(biterName))
@@ -275,7 +295,7 @@ public partial class Main : Control
         while (true)
         {
             Refresh();
-            var candidateId = await _pick.PickAsync(_session.Definition.Candidates, _session.GetPatience(CaseSession.FinalPhaseId));
+            var candidateId = await _pick.PickAsync(_session.Definition.Candidates, _session.GetPatience(CaseSession.FinalPhaseId), IsOffStage);
             if (candidateId is null) { _phaseId = null; return; }
             chosen = _session.GetCandidate(candidateId);
 
@@ -295,7 +315,7 @@ public partial class Main : Control
 
             _portrait.Shake();
             if (result.Outcome == ChallengeOutcome.Wrong)
-                await PlayFeedbackAsync(chosen.Name, result);
+                await PlayFeedbackAsync(chosen.Name, result, !IsOffStage(chosen));
             else if (!await BiteAsync(chosen.Name))
                 return;
         }
@@ -332,6 +352,7 @@ public partial class Main : Control
     private void ShowSpeaker(string speaker)
     {
         var candidate = _session.Definition.Candidates.FirstOrDefault(c => c.Name == speaker);
+        if (candidate != null && IsOffStage(candidate)) return;
         if (candidate != null) SetPortrait(candidate.Name, candidate.Look, candidate.Id, candidate == _current && _caseStarted);
         else if (_session.Definition.Cast.TryGetValue(speaker, out var look)) SetPortrait(speaker, look, speaker, false);
         // "You", "Narrator", "Evidence", ...: keep whoever is on screen.
@@ -340,6 +361,7 @@ public partial class Main : Control
     private void SetPortrait(string name, Appearance look, string seed, bool showHotspots)
     {
         _nameplate.Text = name;
+        _portrait.Visible = true;
         _portrait.SetLook(look, seed);
         foreach (var hotspot in _portrait.GetChildren().OfType<Hotspot>())
             hotspot.Visible = showHotspots;
@@ -363,11 +385,13 @@ public partial class Main : Control
         {
             var candidate = c;
             var hasNew = c.Interactions.Any(i => _session.IsAvailable(i) && _session.GetStatus(i) == InteractionStatus.New);
+            var gone = IsOffStage(c);
             var mark = c == _current ? "▶ " : "   ";
-            var button = UiTheme.MakeButton($"{mark}{c.Name}{(hasNew ? "  •" : "")}\n     {c.Tagline}",
+            var button = UiTheme.MakeButton($"{mark}{c.Name}{(hasNew ? "  •" : "")}\n     {(gone ? "(left the agency)" : c.Tagline)}",
                 () => Run(() => SelectCandidateAsync(candidate)));
             button.Alignment = HorizontalAlignment.Left;
             button.CustomMinimumSize = new Vector2(230, 64);
+            if (gone) button.Modulate = Colors.White with { A = 0.5f };
             if (c == _current) button.AddThemeStyleboxOverride("normal", UiTheme.Box(Palette.Bandage, Palette.Plum, 3));
             _candidateList.AddChild(button);
         }
@@ -381,10 +405,17 @@ public partial class Main : Control
             _portrait.AddChild(hotspot);
         }
         SetPortrait(_current.Name, _current.Look, _current.Id, true);
+        var currentGone = IsOffStage(_current);
+        if (currentGone)
+        {
+            _portrait.Visible = false;
+            _nameplate.Text = $"{_current.Name} (left)";
+        }
 
         // Topic bubbles
         foreach (var child in _topics.GetChildren()) child.QueueFree();
-        _topics.AddChild(UiTheme.MakeLabel("Ask about…", 16, Palette.InkSoft, hand: true));
+        if (!currentGone)
+            _topics.AddChild(UiTheme.MakeLabel("Ask about…", 16, Palette.InkSoft, hand: true));
         foreach (var i in _current.Interactions.Where(i => i.Kind == InteractionKind.Topic && _session.IsAvailable(i)))
         {
             var interaction = i;
@@ -399,9 +430,9 @@ public partial class Main : Control
         }
 
         // Desk tools
-        _evidenceButton.Text = $"Evidence ({_session.State.Evidence.Count})";
+        RefreshEvidenceTray();
         var xe = _current.CrossExam;
-        _crossButton.Visible = xe != null;
+        _crossButton.Visible = xe != null && !currentGone;
         if (xe != null)
         {
             var solved = _session.IsSolved(xe.Id);
@@ -412,6 +443,25 @@ public partial class Main : Control
         _finalButton.Disabled = !_session.CanBeginFinal;
         _finalButton.TooltipText = _finalButton.Disabled ? "Find decisive proof of a genuine injury first." : "";
     }
+
+    /// <summary>Evidence tray on the desk: one slot per item, click to inspect it at any time.</summary>
+    private void RefreshEvidenceTray()
+    {
+        foreach (var child in _evidenceTray.GetChildren()) child.QueueFree();
+        var collected = _session.CollectedEvidence.ToList();
+        foreach (var ev in collected.Where(e => !_revealing.Contains(e.Id)))
+        {
+            var id = ev.Id;
+            var slot = UiTheme.MakeButton(ev.Icon, () => _evidencePanel.OpenBrowse(collected, id));
+            slot.CustomMinimumSize = new Vector2(48, 44);
+            slot.TooltipText = ev.Name;
+            slot.AddThemeFontSizeOverride("font_size", 22);
+            _evidenceTray.AddChild(slot);
+        }
+    }
+
+    private Vector2 TrayDropPoint() =>
+        _evidenceTray.GlobalPosition + new Vector2(_evidenceTray.Size.X + 24, 22);
 
     private void ScreenShake()
     {

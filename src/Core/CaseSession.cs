@@ -22,6 +22,8 @@ public sealed class CaseSession
     public const string FinalPhaseId = "final";
 
     private readonly Dictionary<string, EvidenceDefinition> _evidence;
+    private readonly Dictionary<string, string> _interactionOwner;
+    private readonly Dictionary<string, string> _crossExamOwner;
     private CaseState? _checkpoint;
 
     public CaseDefinition Definition { get; }
@@ -36,6 +38,11 @@ public sealed class CaseSession
     {
         Definition = definition;
         _evidence = definition.Evidence.ToDictionary(e => e.Id);
+        _interactionOwner = definition.Candidates
+            .SelectMany(c => c.Interactions.Select(i => (i.Id, c.Id)))
+            .ToDictionary(x => x.Item1, x => x.Item2);
+        _crossExamOwner = definition.Candidates.Where(c => c.CrossExam != null)
+            .ToDictionary(c => c.CrossExam!.Id, c => c.Id);
         State = new CaseState();
         foreach (var id in definition.StartingEvidence)
             State.Evidence.Add(id);
@@ -69,13 +76,18 @@ public sealed class CaseSession
         };
     }
 
-    public bool IsAvailable(InteractionDefinition interaction) => Meets(interaction.Requires);
+    public bool HasDeparted(string candidateId) => State.Flags.Contains(DepartedFlag(candidateId));
+
+    public static string DepartedFlag(string candidateId) => "left:" + candidateId;
+
+    public bool IsAvailable(InteractionDefinition interaction) =>
+        !HasDeparted(OwnerOf(interaction)) && Meets(interaction.Requires);
 
     public InteractionStatus GetStatus(InteractionDefinition interaction) =>
         State.SeenInteractions.Contains(interaction.Id) ? InteractionStatus.Completed : InteractionStatus.New;
 
     public bool CanBeginCrossExam(CandidateDefinition candidate) =>
-        candidate.CrossExam is { } xe && !IsSolved(xe.Id) && Meets(xe.Requires);
+        candidate.CrossExam is { } xe && !HasDeparted(candidate.Id) && !IsSolved(xe.Id) && Meets(xe.Requires);
 
     public bool CanBeginFinal => !IsSolved(FinalPhaseId) && Meets(Definition.Final.Requires);
 
@@ -128,6 +140,8 @@ public sealed class CaseSession
         if (statement.Contradicts.Contains(evidenceId))
         {
             State.SolvedPhases.Add(crossExam.Id);
+            if (crossExam.Departs)
+                State.Flags.Add(DepartedFlag(_crossExamOwner[crossExam.Id]));
             var gained = Apply(crossExam.Grants, crossExam.SetsFlags);
             StateChanged?.Invoke();
             return new ChallengeResult(ChallengeOutcome.Success, "", null, GetPatience(crossExam.Id), gained);
@@ -159,6 +173,9 @@ public sealed class CaseSession
         Definition.Epilogue.Concat(Definition.EpilogueExtras.Where(x => Meets(x.Requires)).SelectMany(x => x.Lines));
 
     // ---- Internals -----------------------------------------------------------------------
+
+    private string OwnerOf(InteractionDefinition interaction) =>
+        _interactionOwner.GetValueOrDefault(interaction.Id, "");
 
     private ChallengeResult Penalise(string phaseId, string feedback, string? hint)
     {

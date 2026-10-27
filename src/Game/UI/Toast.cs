@@ -2,11 +2,12 @@ using Godot;
 
 namespace ProjectZinder.Game.UI;
 
-/// <summary>Brief, fading announcements: objectives, new evidence, phase changes.</summary>
+/// <summary>Brief, fading announcements: objectives, unlocks, phase changes. Queued so none are lost.</summary>
 public partial class Toast : PanelContainer
 {
     private Label _label = null!;
     private Tween? _tween;
+    private readonly Queue<(string Text, Color Accent, float Hold)> _queue = new();
 
     public override void _Ready()
     {
@@ -20,15 +21,22 @@ public partial class Toast : PanelContainer
 
     public void Announce(string text, Color? accent = null, float hold = 2.2f)
     {
-        _label.Text = text;
-        _label.AddThemeColorOverride("font_color", accent ?? Palette.Paper);
+        _queue.Enqueue((text, accent ?? Palette.Paper, hold));
+        if (_tween is not { } t || !t.IsRunning()) PlayNext();
+    }
+
+    private void PlayNext()
+    {
+        if (!_queue.TryDequeue(out var next)) return;
+        _label.Text = next.Text;
+        _label.AddThemeColorOverride("font_color", next.Accent);
         ResetSize();
         Position = new Vector2((1280 - Size.X) / 2, 488); // between portrait and dialogue box
 
-        _tween?.Kill();
         _tween = CreateTween();
         _tween.TweenProperty(this, "modulate:a", 1f, 0.2);
-        _tween.TweenInterval(hold);
-        _tween.TweenProperty(this, "modulate:a", 0f, 0.6);
+        _tween.TweenInterval(next.Hold);
+        _tween.TweenProperty(this, "modulate:a", 0f, 0.4);
+        _tween.TweenCallback(Callable.From(PlayNext));
     }
 }

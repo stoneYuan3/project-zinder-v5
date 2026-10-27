@@ -62,6 +62,10 @@ public static class CaseLoader
             }
 
             if (c.CrossExam is not { } xe) continue;
+            if (xe.Departs && c.DepartedLines.Count == 0)
+                errors.Add($"{c.Id}: departs after {xe.Id} but has no departedLines.");
+            if (xe.Departs && c.Id == def.Final.CorrectCandidate)
+                errors.Add($"{c.Id}: the genuine survivor must not depart, or the case becomes unsolvable.");
             CheckEvidence(xe.Grants, xe.Id);
             CheckRequires(xe.Requires, xe.Id);
             if (xe.Statements.Count is < 3 or > 5)
