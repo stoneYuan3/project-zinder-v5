@@ -11,31 +11,28 @@
   },
 
   "intro": [
-    { "speaker": "Aunt Gristle", "text": "Darling! Welcome to your very own matchmaking agency. Don't touch the jar of spare eyes, it's decorative." },
-    { "speaker": "Aunt Gristle", "text": "Since the war ended, we zombies have rediscovered romance. And nothing is more romantic than a truly spectacular injury." },
-    { "speaker": "Aunt Gristle", "text": "Scars are medals, sweetheart. And my celebrity friends pay handsomely for partners with the right story." },
+    { "speaker": "Aunt Gristle", "text": "Darling! Welcome to your very own matchmaking agency. zombies have rediscovered romance." },
     { "speaker": "Aunt Gristle", "text": "Your first client is the Duchess Ember Rotwell. Darling of the gossip columns. Flammable taste in partners." },
-    { "speaker": "Duchess Ember Rotwell", "text": "I want someone who was burned to charcoal. Crisp. Smoky. Survived the Gnawing Spoon fire." },
-    { "speaker": "Duchess Ember Rotwell", "text": "Someone who has been through the flames understands warmth. Do you understand? WARMTH." },
-    { "speaker": "Aunt Gristle", "text": "Unfortunately, the Duchess's publicist announced it in every paper. Now three candidates claim to be the survivor." },
+    { "speaker": "Duchess Ember Rotwell", "text": "Someone who has been through the flames understands warmth. Do you understand? WARMTH. I want someone who was burned to charcoal. Crisp. Smoky. The only survivor of the Gnawing Spoon fire." },
+    { "speaker": "Aunt Gristle", "text": "Unfortunately, the Duchess's publicist announced it in every newspaper. Now three candidates claim to be the survivor of the Gnawing Spoon fire." },
     { "speaker": "Aunt Gristle", "text": "Find the one who really burned. Don't just catch liars — verify the injury. Your commission file is on the desk." }
   ],
 
   "commission": {
     "request": "Duchess Ember Rotwell seeks a partner who was burned to charcoal in the Gnawing Spoon restaurant fire and survived.",
     "appointment": [
-      "Unverified: an anonymous voice message mentioned 'the smell of burnt brain-meat'.",
-      "Unverified: fire started in the restaurant kitchen at around 8:00 PM, Blood Moon Buffet night.",
-      "Unverified: Doc Sutures' Body Shop treated a severely charred patient the next morning."
+      "An anonymous voice message mentioned 'the smell of burnt brain-meat'.",
+      "Fire started in the restaurant kitchen at around 8:00 PM, Blood Moon Buffet night.",
+      "Doc Sutures' Body Shop treated a severely charred patient the next morning."
     ],
-    "publicAnnouncement": "WANTED: the brave survivor of the Gnawing Spoon fire! Burned to charcoal while heroically running BACK into the flames. A famous Duchess wishes to meet you. Apply at Gristle & Kin Matchmaking."
+    "publicAnnouncement": "WANTED: the brave, lone survivor of the Gnawing Spoon fire! Burned to charcoal while heroically running BACK into the flames. A famous Duchess wishes to meet you. Apply at Gristle & Kin Matchmaking."
   },
 
   "startingEvidence": [ "announcement" ],
 
   "evidence": [
     { "id": "announcement", "name": "Public Announcement", "icon": "📰",
-      "facts": "Names the Gnawing Spoon and says the survivor ran back into the flames. Printed in every paper — anyone could know this.",
+      "facts": "Reported that the survivor ran back into the flames. Printed in every paper — anyone could know this.",
       "source": "Commission file",
       "reveal": [
         { "speaker": "You", "text": "(The public announcement. Every candidate has read this — knowing it proves nothing.)" }
@@ -60,20 +57,20 @@
       "reveal": [
         { "speaker": "You", "text": "(Let's see... 7:58, Marrow steps out back for a smoke break.)" },
         { "speaker": "You", "text": "(8:01 to 8:03, everyone leaves through the front — including a small child with their parents.)" },
-        { "speaker": "You", "text": "(8:04, one blurry diner walks back IN. At 8:12 they stagger out on fire... holding a covered dish?)" }
+        { "speaker": "You", "text": "(8:04, one blurry diner walks back IN. At 8:12 the same diner stagger out on fire... holding a covered dish?)" }
       ] },
     { "id": "repair_record", "name": "Body Shop Repair Record", "icon": "🧾",
-      "facts": "Doc Sutures' Body Shop, morning after the fire: 'full arm replacement, severe charring.' The patient name is smudged; only a stitched 'P' signature remains.",
+      "facts": "Doc Sutures' Body Shop, morning after the fire: 'full arm replacement, severe charring.' The patient name is unreadable; only 'P' was left on the name tag",
       "source": "Found: Patch's coat pocket",
       "reveal": [
-        { "speaker": "You", "text": "(The patient name is smudged. Just a stitched 'P'.)" },
+        { "speaker": "You", "text": "(The patient name is unreadable. only 'P' was left.)" },
         { "speaker": "You", "text": "(It proves someone was treated for severe charring — not who, or where it happened.)" }
       ] },
     { "id": "meal_ticket", "name": "Prepaid Meal Ticket", "icon": "🎟",
       "facts": "'Blood Moon Buffet — Deluxe Brain Platter. Table 6. PREPAID. NON-REFUNDABLE.'",
       "source": "Patch (after cross-examination)",
       "reveal": [
-        { "speaker": "You", "text": "(Table 6 — Patch's table. Prepaid and non-refundable.)" },
+        { "speaker": "You", "text": "(Table 6 — Patch's table. Brain Platter. Prepaid and non-refundable.)" },
         { "speaker": "You", "text": "(Well. That's certainly a reason to run back into a burning building.)" }
       ] },
     { "id": "charred_tissue", "name": "Charred Tissue", "icon": "🔥",
@@ -134,9 +131,7 @@
         ],
         "successLines": [
           { "speaker": "You", "text": "Never put anything on your skin? Then explain the fresh body paint between your fingers." },
-          { "speaker": "Sooty Ashgrave", "text": "...It's Midnight Velvet. Two coats. Waterproof." },
-          { "speaker": "Sooty Ashgrave", "text": "I bought it the morning the announcement ran. Painted myself head to toe in the bathtub." },
-          { "speaker": "Sooty Ashgrave", "text": "Underneath I'm pale as a fresh corpse. Never been near the Gnawing Spoon. Never been near any fire." },
+          { "speaker": "Sooty Ashgrave", "text": "...It's Midnight Velvet. Two coats. Waterproof. I bought it the morning the announcement ran. Painted myself head to toe in the bathtub. Underneath I'm pale as a fresh corpse. Never been near the Gnawing Spoon. Never been near any fire." },
           { "speaker": "Sooty Ashgrave", "text": "Everything I told you came straight from the newspaper. The Duchess is SO famous... I just wanted one date." },
           { "speaker": "Sooty Ashgrave", "text": "Fine. I'm leaving. Please don't tell the Duchess about the bathtub." }
         ],
@@ -194,9 +189,7 @@
         ],
         "successLines": [
           { "speaker": "You", "text": "Your own tape shows you stepping out back for a smoke break at 7:58 — before the fire started." },
-          { "speaker": "Marrow Grubb", "text": "...Fine. I was outside on my smoke break. By the time I turned around, the kitchen was already burning." },
-          { "speaker": "Marrow Grubb", "text": "The hands? Dish steamer. Twelve years of scalding water, not one second of fire." },
-          { "speaker": "Marrow Grubb", "text": "When the papers said 'Gnawing Spoon', I thought: nobody knows that place better than me. I could tell the story perfectly." },
+          { "speaker": "Marrow Grubb", "text": "...Fine. I was outside on my smoke break. By the time I turned around, the kitchen was already burning.The hands? Dish steamer. Twelve years of scalding water, not one second of fire. When the papers said 'Gnawing Spoon', I thought: nobody knows that place better than me. I could tell the story perfectly." },
           { "speaker": "Marrow Grubb", "text": "But I DID see someone go back in. A bandaged regular from Table 6. Always ordered the deluxe platter." },
           { "speaker": "Marrow Grubb", "text": "I've got dishes waiting. Good luck, matchmaker." }
         ],
@@ -295,8 +288,7 @@
   "briefing": [
     { "speaker": "You", "text": "Duchess, the survivor is Patch Stitchwell. Their burns are real — charred to the bone at the Gnawing Spoon." },
     { "speaker": "You", "text": "One correction, though: there was no child. Patch ran back into the fire for a prepaid brain platter." },
-    { "speaker": "Duchess Ember Rotwell", "text": "...Into an inferno. For brains. Because they'd already paid." },
-    { "speaker": "Duchess Ember Rotwell", "text": "That is the most passionate thing I have ever heard. Arrange the date." }
+    { "speaker": "Duchess Ember Rotwell", "text": "...Into an inferno. For brains. Because they'd already paid. That is the most passionate thing I have ever heard. Arrange the date." }
   ],
   "epilogue": [
     { "speaker": "Narrator", "text": "One week later, at the newly rebuilt Gnawing Spoon..." },
